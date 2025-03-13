@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import { UserCircle } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function AppLayout({ children }: { children: ReactNode }) {
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   return (
     <div className="min-h-screen bg-gray-50 relative">
       {/* Grid background pattern */}
@@ -32,10 +33,19 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                 href="/account" 
                 className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
               >
-                {session?.user && (
-                    <span className="text-sm">{session.user.email}</span>
+                {isPending ? (
+                    <LoadingSpinner size="w-6 h-6" />
+                ) : session?.user ? (
+                    <>
+                    <span className="text-sm">{session?.user?.email}</span>
+                    <UserCircle className="w-6 h-6" />
+                    </>
+                ) : (
+                    <>
+                    <span className="text-sm">Sign in</span>
+                    <UserCircle className="w-6 h-6" />
+                    </>
                 )}
-                <UserCircle className="w-6 h-6" />
               </Link>
             </div>
           </div>
