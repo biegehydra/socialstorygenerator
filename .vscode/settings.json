@@ -1,0 +1,12 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": null,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.workingDirectories": [{ "pattern": "./src/**" }],
+  "eslint.format.enable": true,
+  "eslint.debug": true,
+  "eslint.codeActionsOnSave.mode": "problems",
+  "eslint.validate": ["typescript", "typescriptreact"]
+}

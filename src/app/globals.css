@@ -6,6 +6,7 @@
 }
 
 @theme inline {
+  --color-primary: #171717;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -23,4 +24,100 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+a:not(.no-style),
+.link-style {
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  padding: 0.2rem 0.1rem;
+}
+
+a:not(.no-style)::after,
+.link-style::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--color-primary);
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+  border-radius: 1.5px;
+}
+
+a:not(.no-style):hover,
+.link-style:hover {
+  color: var(--color-primary);
+}
+
+a:not(.no-style):hover::after,
+.link-style:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+  height: 3px;
+}
+
+/* Active link state */
+a.active:not(.no-style) {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+a.active:not(.no-style)::after {
+  transform: scaleX(1);
+  height: 3px;
+}
+
+/* Inline link - always underlined with animation */
+a.inline-link,
+.inline-link {
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  padding: 0.2rem 0.1rem;
+  margin: 0 4px;
+}
+
+a.inline-link::after,
+.inline-link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: -2px;
+  left: 0;
+  background-color: transparent;
+  transform: scaleX(1);
+  transform-origin: bottom left;
+  border-radius: 1.5px;
+  background-image: linear-gradient(
+    to right,
+    var(--color-primary) 0%,
+    var(--color-primary) 50%,
+    currentColor 50%,
+    currentColor 100%
+  );
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transition: background-position 0.3s ease;
+}
+
+a.inline-link:hover,
+.inline-link:hover {
+  color: var(--color-primary);
+}
+
+a.inline-link:hover::after,
+.inline-link:hover::after {
+  background-color: transparent;
+  background-position: 0 0;
+  height: 3px;
 }
