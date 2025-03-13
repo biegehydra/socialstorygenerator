@@ -31,7 +31,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               Contact Us
             </Link>
           </div>
-          <div>© CurbCaddie 2025</div>
+          <div>© Social Story Generator 2025</div>
         </div>
       </div>
     </footer>
