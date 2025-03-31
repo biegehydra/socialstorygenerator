@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import { UserCircle } from 'lucide-react';
+import { UserCircle, Upload } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -26,25 +26,34 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         <header className="bg-white shadow">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
-              <Link href="/" className="text-xl font-bold text-gray-900">
-                Social Story Generator
-              </Link>
-              <Link 
-                href="/account" 
+              <div className="flex items-center space-x-8">
+                <Link href="/" className="text-xl font-bold text-gray-900">
+                  Social Story Generator
+                </Link>
+                <Link
+                  href="/upload"
+                  className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
+                >
+                  <Upload className="w-5 h-5" />
+                  <span className="text-sm">Upload</span>
+                </Link>
+              </div>
+              <Link
+                href="/account"
                 className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
               >
                 {isPending ? (
-                    <LoadingSpinner size="w-6 h-6" />
+                  <LoadingSpinner size="w-6 h-6" />
                 ) : session?.user ? (
-                    <>
+                  <>
                     <span className="text-sm">{session?.user?.email}</span>
                     <UserCircle className="w-6 h-6" />
-                    </>
+                  </>
                 ) : (
-                    <>
+                  <>
                     <span className="text-sm">Sign in</span>
                     <UserCircle className="w-6 h-6" />
-                    </>
+                  </>
                 )}
               </Link>
             </div>
