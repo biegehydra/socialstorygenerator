@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
     bodyParser: {
       sizeLimit: '50mb'
     }
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '50mb',
+    },
   }
 };
 
