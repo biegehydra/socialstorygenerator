@@ -24,7 +24,7 @@ export default function FileUploadContainer({ serverAction }: FileUploadContaine
         setResult(null);
 
         try {
-            // Create a FormData object to send to the server
+            // Create a FormData object to send to server
             const formData = new FormData();
             formData.append('file', file);
 
