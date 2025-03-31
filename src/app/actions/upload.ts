@@ -1,23 +1,18 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-
-// Type for the expected JSON structure
-type SocialData = {
-    // Define your expected JSON structure here
-    // For example:
-    posts?: Array<any>;
-    user?: {
-        name?: string;
-        id?: string;
-    };
-    // Add other expected fields
-};
+import { Root } from '@/lib/instagram-models';
+import { processInstagramData, type InstagramStats } from '@/lib/processors';
 
 /**
  * Process the uploaded JSON file
  */
-export async function processJsonFile(formData: FormData): Promise<{ success: boolean; message?: string; data?: SocialData }> {
+export async function processJsonFile(formData: FormData): Promise<{
+    success: boolean;
+    message?: string;
+    data?: Root;
+    stats?: InstagramStats;
+}> {
     try {
         const file = formData.get('file') as File;
 
@@ -34,7 +29,7 @@ export async function processJsonFile(formData: FormData): Promise<{ success: bo
         const content = await file.text();
 
         // Parse JSON
-        let data: SocialData;
+        let data: Root;
         try {
             data = JSON.parse(content);
         } catch (e) {
@@ -42,17 +37,20 @@ export async function processJsonFile(formData: FormData): Promise<{ success: bo
         }
 
         // Validate the structure if needed
-        // This is where you could add validation for the expected structure
+        if (!data.messages || !Array.isArray(data.messages) || !data.participants) {
+            return { success: false, message: 'Invalid Instagram data format' };
+        }
 
-        // Store the data or process it further
-        // For example, you could save it to a database or analyze it
+        // Process the data
+        const stats = processInstagramData(data);
 
         // Revalidate the path to refresh the data on the client
         revalidatePath('/');
 
         return {
             success: true,
-            data
+            data,
+            stats
         };
     } catch (error) {
         console.error('Error processing file:', error);

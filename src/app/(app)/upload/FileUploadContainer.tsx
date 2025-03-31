@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import FileUpload from '@/app/components/FileUpload';
+import { InstagramStats } from '@/lib/processors';
 
 type ProcessJsonResult = {
     success: boolean;
     message?: string;
     data?: any;
+    stats?: InstagramStats;
 };
 
 type FileUploadContainerProps = {
@@ -54,6 +56,14 @@ export default function FileUploadContainer({ serverAction }: FileUploadContaine
         });
     };
 
+    const formatDate = (date: Date): string => {
+        return new Date(date).toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    };
+
     return (
         <div className="space-y-6">
             <FileUpload
@@ -66,10 +76,59 @@ export default function FileUploadContainer({ serverAction }: FileUploadContaine
                     {result.success ? (
                         <div className="text-green-700">
                             <h3 className="font-medium">File uploaded successfully!</h3>
-                            {result.data && (
-                                <div className="mt-2">
-                                    <p>Your data is ready for processing.</p>
-                                    {/* You could display a summary of the uploaded data here */}
+                            {result.stats && (
+                                <div className="mt-4 bg-white p-4 rounded-lg border border-gray-200 text-gray-800">
+                                    <h4 className="text-lg font-medium mb-3">{result.stats.conversationTitle}</h4>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-600">Participants:</span>
+                                                <span className="font-medium">{result.stats.participantCount}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-600">Messages:</span>
+                                                <span className="font-medium">{result.stats.messageCount.toLocaleString()}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-600">Date Range:</span>
+                                                <span className="font-medium">
+                                                    {formatDate(result.stats.firstMessageDate)} - {formatDate(result.stats.lastMessageDate)}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-600">Photos:</span>
+                                                <span className="font-medium">{result.stats.mediaCount.photos.toLocaleString()}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-600">Videos:</span>
+                                                <span className="font-medium">{result.stats.mediaCount.videos.toLocaleString()}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-600">Audio:</span>
+                                                <span className="font-medium">{result.stats.mediaCount.audio.toLocaleString()}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-600">Reactions:</span>
+                                                <span className="font-medium">{result.stats.reactionCount.toLocaleString()}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-4">
+                                        <h5 className="font-medium mb-2">Top Participants</h5>
+                                        <div className="space-y-1">
+                                            {result.stats.topSenders.slice(0, 5).map((sender, index) => (
+                                                <div key={index} className="flex justify-between">
+                                                    <span>{sender.name}</span>
+                                                    <span className="font-medium">{sender.count.toLocaleString()} messages</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
                             )}
                         </div>
