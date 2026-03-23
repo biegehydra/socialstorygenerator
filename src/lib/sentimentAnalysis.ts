@@ -238,7 +238,7 @@ const config = {
     },
   },
 };
-const model = 'gemini-1.5-flash'; // Changed model
+const model = 'gemini-2.5-flash'; // Changed model
 
 // Define the structure for the sentiment analysis result
 export interface SentimentAnalysisMessage {
